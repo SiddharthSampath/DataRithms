@@ -1,0 +1,31 @@
+{% extends "base.html" %} 
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/categories.css"> 
+{% endblock %} 
+
+{% block content %}
+
+<div class="container">
+    <div class="text-center">
+        <button id="newCategory" class="center btn btn-lg btn-primary">Add a new category</button>
+    </div>
+    <div class="row">
+        {% for category in category_data %}
+        <div class="col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ category.category_name }}</h5>
+                    <p class="card-text">{{ category.category_description }}</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                </div>
+            </div>
+        </div>
+        
+        {% endfor %}
+
+
+    </div>
+
+</div>
+{% endblock %}

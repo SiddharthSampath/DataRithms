@@ -14,20 +14,22 @@ def setupdb(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    migrate = Migrate(app, db)
-    #db.create_all()
+    #migrate = Migrate(app, db)
+    db.create_all()
 
 class Problem(db.Model):
     __tablename__ = 'problems'
     id = Column(Integer(), primary_key=True)
+    question_title = Column(String(80), nullable=False)
     question = Column(Text(), nullable=False)
     answer = Column(Text(), nullable=False)
     cat_id = Column(Integer(), ForeignKey('categories.id'))
 
-class Catgeory(db.Model):
+class Category(db.Model):
     __tablename__ = 'categories'
     id = Column(Integer(), primary_key=True)
     category_name = Column(String(), nullable=False)
+    category_description = Column(String(), nullable=False)
     problems = relationship('Problem', lazy='dynamic', backref='problem', cascade='all, delete-orphan')
 
 

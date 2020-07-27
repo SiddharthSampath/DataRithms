@@ -1,20 +1,22 @@
-{% extends "base.html" %}
-{% block title %}DataRithms{% endblock %}
-{% block links%}
-  <link rel="stylesheet" href="/static/css/index.css">
-{% endblock %}
+{% extends "base.html" %} 
+
+{% block title %}DataRithms{% endblock %} 
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/index.css"> 
+{% endblock %} 
+
 {% block content %}
-  <div class="container">
+<div class="container">
     <div class="jumbotron mt-5">
-      <h1 class="display-3">DataRithms!</h1>
-      <p class="lead">Find your rhythm in solving data structures and algorithm problems!</p>
-      <hr class="my-4">
-      <p>Explore a collection of a variety of questions, to help you gain the confidence you need to ace any coding interview</p>
-      <p class="lead">
-        <a class="btn btn-primary btn-lg" href="#" role="button">Go to Questions</a>
-      </p>
+        <h1 class="display-3">DataRithms!</h1>
+        <p class="lead">Find your rhythm in solving data structures and algorithm problems!</p>
+        <hr class="my-4">
+        <p>Explore a collection of a variety of questions, to help you gain the confidence you need to ace any coding interview</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href={{ url_for( 'categories') }} role="button">Go to Questions</a>
+        </p>
     </div>
-  </div>
+</div>
 
 {% endblock %}
-   
