@@ -1,0 +1,98 @@
+{% extends "base.html" %} 
+
+{% block links %}
+
+{% endblock %} 
+
+{% block title %} DataRithms Question List {% endblock %}
+
+{% block content %}
+<style>
+    .list-group{
+        margin-top: 5em;
+    }
+</style>
+<div class="container">
+    <h1 class="text-center">{{category}}</h1>
+    <div class="text-center">
+        <button id="newCategory" class="center btn btn-lg btn-primary">Add a new question</button>
+    </div>
+    
+    <ul class="list-group">
+        
+        {% for question in questions %}
+            <li data-id={{question.id}} class="list-group-item">
+                <div class="row">
+                    <div class="col-9">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal{{question.id}}">
+                            {{question.question_title}}
+                        </button>
+                        
+                        <!-- Modal -->
+                        <div class="modal fade" id="questionModal{{question.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{question.question_title}}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                {{question.question}}
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" onclick="document.getElementById('answer').innerHTML = {{question.answer}};"class="btn btn-primary" data-toggle="modal" data-target="#answerModal{{question.id}}">
+                                    Show Answer
+                                </button>
+                                
+                                <!-- Modal -->
+                                <div class="modal fade" id="answerModal{{question.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">{{question.question_title}}</h5>
+                                        <button type="button" class="close" onclick="$('#answerModal{{question.id}}').modal('hide')" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                        <div id='answer' class="modal-body">
+                                            {{question.answer|safe}}
+                                        </div>
+                                        <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" onclick="$('#answerModal{{question.id}}').modal('hide')">Close</button>
+                                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button id="edit" class="btn btn-primary">Edit</button>
+                        <button id="delete" class="btn btn-danger">Delete</button> 
+                    </div>
+                    <!-- <div class="col-2">
+                        
+                    </div> -->
+                </div>
+            </li>
+        {% endfor %}
+      </ul>
+</div>
+
+{% endblock %}
+{% block js %}
+<script>
+    function myAnswer(){
+        
+    }
+</script>
+{% endblock %}

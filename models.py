@@ -14,8 +14,8 @@ def setupdb(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    #migrate = Migrate(app, db)
-    db.create_all()
+    migrate = Migrate(app, db)
+    #db.create_all()
 
 class Problem(db.Model):
     __tablename__ = 'problems'
@@ -30,7 +30,7 @@ class Category(db.Model):
     id = Column(Integer(), primary_key=True)
     category_name = Column(String(), nullable=False)
     category_description = Column(String(), nullable=False)
-    problems = relationship('Problem', lazy='dynamic', backref='problem', cascade='all, delete-orphan')
+    problems = relationship('Problem', lazy='dynamic', backref='category', cascade='all, delete-orphan')
 
 
 

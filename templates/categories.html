@@ -4,6 +4,8 @@
 <link rel="stylesheet" href="/static/css/categories.css"> 
 {% endblock %} 
 
+{% block title %}DataRithms Categories{% endblock %}
+
 {% block content %}
 
 <div class="container">
@@ -17,7 +19,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ category.category_name }}</h5>
                     <p class="card-text">{{ category.category_description }}</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                    <a href={{ url_for('category_questions', category_id=category.id) }} class="btn btn-primary">Go to {{ category.category_name }} questions</a>
                 </div>
             </div>
         </div>
