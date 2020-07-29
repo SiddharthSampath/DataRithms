@@ -15,7 +15,7 @@
 <div class="container">
     <h1 class="text-center">{{category}}</h1>
     <div class="text-center">
-        <button id="newCategory" class="center btn btn-lg btn-primary">Add a new question</button>
+        <a href="{{url_for('create_question', category_id=category_id)}}" id="newQuestion" class="center btn btn-lg btn-primary">Add a new question</a>
     </div>
     
     <ul class="list-group">
@@ -41,11 +41,11 @@
                                 </button>
                                 </div>
                                 <div class="modal-body">
-                                {{question.question}}
+                                {{question.question|safe}}
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" onclick="document.getElementById('answer').innerHTML = {{question.answer}};"class="btn btn-primary" data-toggle="modal" data-target="#answerModal{{question.id}}">
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#answerModal{{question.id}}">
                                     Show Answer
                                 </button>
                                 
@@ -65,7 +65,6 @@
                                         </div>
                                         <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" onclick="$('#answerModal{{question.id}}').modal('hide')">Close</button>
-                                        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
                                         </div>
                                     </div>
                                     </div>
@@ -79,20 +78,10 @@
                         <button id="edit" class="btn btn-primary">Edit</button>
                         <button id="delete" class="btn btn-danger">Delete</button> 
                     </div>
-                    <!-- <div class="col-2">
-                        
-                    </div> -->
                 </div>
             </li>
         {% endfor %}
       </ul>
 </div>
 
-{% endblock %}
-{% block js %}
-<script>
-    function myAnswer(){
-        
-    }
-</script>
 {% endblock %}

@@ -25,6 +25,10 @@ class Problem(db.Model):
     answer = Column(Text(), nullable=False)
     cat_id = Column(Integer(), ForeignKey('categories.id'))
 
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
 class Category(db.Model):
     __tablename__ = 'categories'
     id = Column(Integer(), primary_key=True)

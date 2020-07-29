@@ -46,7 +46,18 @@
           </form> -->
         </div>
       </nav>
-
+      <div class="container">
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            {% for message in messages %}
+              <div class="alert alert-block alert-info fade in">
+                <a data-dismiss="alert">&times;</a>
+                {{ message }}
+              </div>
+            {% endfor %}
+          {% endif %}
+      {% endwith %}
+      </div>
       {% block content %}
       {% endblock %}
     

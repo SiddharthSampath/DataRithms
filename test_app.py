@@ -26,9 +26,10 @@ class DataRithmsTestCase(unittest.TestCase):
         """Executed after reach test"""
         pass
     
-    def test_sample(self):
+    def test_landing_page(self):
         res = self.client().get('/')
         self.assertEqual(res.status_code, 200)
+
 
 if __name__ == "__main__":
     unittest.main()
