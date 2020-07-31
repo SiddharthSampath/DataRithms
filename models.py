@@ -17,6 +17,9 @@ def setupdb(app, database_path=database_path):
     migrate = Migrate(app, db)
     #db.create_all()
 
+def rollback():
+    db.session.rollback()
+
 class Problem(db.Model):
     __tablename__ = 'problems'
     id = Column(Integer(), primary_key=True)
@@ -29,12 +32,17 @@ class Problem(db.Model):
         db.session.add(self)
         db.session.commit()
 
+
 class Category(db.Model):
     __tablename__ = 'categories'
     id = Column(Integer(), primary_key=True)
     category_name = Column(String(), nullable=False)
     category_description = Column(String(), nullable=False)
     problems = relationship('Problem', lazy='dynamic', backref='category', cascade='all, delete-orphan')
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
 
 

@@ -3,8 +3,8 @@ from flask import Flask, request, abort, jsonify, render_template, flash, redire
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
-from models import setupdb, Category, Problem
-from forms import QuestionForm
+from models import setupdb, Category, Problem, rollback
+from forms import QuestionForm, CategoryForm
 from flask_wtf.csrf import CSRFProtect
 from config import SECRET_KEY
 import os
@@ -15,23 +15,32 @@ def create_app(test_config=None):
   app = Flask(__name__)
   app.secret_key = SECRET_KEY
   setupdb(app)
-  CORS(app)
-  
-  
-  
+  CORS(app,expose_headers='Authorization')
   csrf.init_app(app)
+  
+  
+  
+  @app.after_request
+  def after_request(response):
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,POST,PATCH,PUT,DELETE,OPTIONS')
+    return response
 
   @app.route('/')
   def index():
     return render_template('index.html')
 
-  @app.route('/categories')
+  @app.route('/login')
+  def login():
+    return render_template('index.html')
+
+  @app.route('/categories/')
   def categories():
     categories = Category.query.all()
     print(categories) 
     return render_template('categories.html', category_data=categories)
 
-  @app.route('/categories/<int:category_id>/questions')
+  @app.route('/categories/<int:category_id>/questions/')
   def category_questions(category_id):
     current_category = Category.query.get(category_id)
     questions = current_category.problems
@@ -40,14 +49,14 @@ def create_app(test_config=None):
     print(questions)
     return render_template("questions.html", questions=questions, category=category_name, category_id=category_id)
     
-  @app.route('/categories/<int:category_id>/addquestion')
+  @app.route('/categories/<int:category_id>/addquestion/')
   def create_question(category_id):
     form = QuestionForm()
     category = Category.query.get(category_id)
     category_name = category.category_name
     return render_template('create_question.html', form=form, category_id=category_id, category_name=category_name)
 
-  @app.route('/categories/<int:category_id>/addquestion', methods=['POST'])
+  @app.route('/categories/<int:category_id>/addquestion/', methods=['POST'])
   def insert_question(category_id):
     try:
       question_title = request.form['question_title']
@@ -58,11 +67,33 @@ def create_app(test_config=None):
       problem = Problem(question_title=question_title, question=question, answer=answer, cat_id=category_id)
       problem.insert()
     except:
+      rollback()
       flash("Error occured during insert")
       print("Error occured")
       abort(400)
+    
     flash("Question successfully added")
     return redirect(url_for('create_question', category_id=category_id))
+
+  @app.route('/categories/addcategory/')
+  def create_category():
+    form = CategoryForm()
+    return render_template('create_category.html', form=form)
+  
+  @app.route('/categories/addcategory/', methods=['POST'])
+  def insert_category():
+    try:
+      category_name = request.form['category_name']
+      category_description = request.form['category_description']
+      category = Category(category_name=category_name, category_description=category_description)
+      category.insert()
+    except:
+      flash("Error occurred during insert")
+      rollback()
+    flash("Category added successfully")
+    return redirect(url_for('create_category'))
+
+
 
   return app
 

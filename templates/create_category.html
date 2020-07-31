@@ -1,0 +1,28 @@
+{% extends "base.html" %} 
+
+{% block title %}DataRithms{% endblock %} 
+
+{% block links %}
+
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">  </h1>
+<div class="container">
+    <!-- Default form contact -->
+<form id="create-form" method='POST' class="text-center mt-5 border border-light p-5">
+
+    <p class="h4 mb-4">Add a Category</p>
+    {{ form.csrf_token }}
+    <!-- Category Name -->
+    {{ form.category_name(class_='form-control mb-4', placeholder = 'Category Name', autofocus = true) }}
+    <!-- Category Description -->
+    {{ form.category_description(class_='form-control mb-4', placeholder = 'Category Description', autofocus = true) }}
+    
+    <button class="btn btn-info btn-block" type="submit">Add</button>
+
+</form>
+<!-- Default form contact -->
+</div>
+
+{% endblock %}

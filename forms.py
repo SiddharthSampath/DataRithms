@@ -19,3 +19,14 @@ class QuestionForm(Form):
         validators=[DataRequired()]
     )
     
+class CategoryForm(Form):
+    category_name = StringField(
+        'category_name',
+        validators=[DataRequired()]
+    )
+    category_description = StringField(
+        'category_description',
+        validators=[DataRequired()]
+    )
+    
+    
