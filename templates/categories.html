@@ -2,6 +2,56 @@
 
 {% block links %}
 <link rel="stylesheet" href="/static/css/categories.css"> 
+<script src="/static/js/jwt-decode.min.js"></script>
+<script>
+    window.onload = function(){
+        let token = localStorage.getItem('token');
+        if(token != null){
+            let parsed = jwt_decode(token);
+            let add_category_perm = parsed["permissions"].includes('post:category');
+
+            if(add_category_perm == false){
+                document.getElementById("newCategory").style.display = "none";
+            }
+        }
+        else{
+            document.getElementById("newCategory").style.display = "none";
+        }
+    }
+    function sendrequestforquestion(){
+        console.log("Heelooo from sendrquest function in categories.html");
+        let token = localStorage.getItem('token');
+        if(token == null){
+            token = "NoAuth";
+        }
+        console.log(document.getElementById("categorieslist"));
+        console.log(token);
+        document.getElementById("categorieslist").addEventListener('click', function(e){
+            console.log(e.id);
+            if(e.target.classList.contains('categ-class')){
+                console.log('in here');
+                console.log(e.target);
+                console.log("Inside click function");
+                fetch('/categories/'+e.target.id+'/questions',{
+                    method : 'GET',
+                    headers:{
+                        'Authorization' : "Bearer " + token
+                    }
+                        
+                }).then(function(response){
+                     window.location.href='/categories/'+e.target.id+'/questions'
+    
+                    
+                }).catch(function(){
+                    console.log();
+
+                })
+
+            }
+            
+        })
+    }
+</script>
 {% endblock %} 
 
 {% block title %}DataRithms Categories{% endblock %}
@@ -12,14 +62,15 @@
     <div class="text-center">
         <a href="{{url_for('create_category')}}" id="newCategory" class="center btn btn-lg btn-primary">Add a new category</a>
     </div>
-    <div class="row">
+    <div id="categorieslist" class="row">
         {% for category in category_data %}
         <div class="col-sm-4">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ category.category_name }}</h5>
                     <p class="card-text">{{ category.category_description }}</p>
-                    <a href={{ url_for('category_questions', category_id=category.id) }} class="btn btn-primary">Go to {{ category.category_name }} questions</a>
+                    <!-- href={{ url_for('category_questions', category_id=category.id) }}  -->
+                    <a id="{{category.id}}" onclick="sendrequestforquestion()" href="#" class="categ-class btn btn-primary">Go to {{ category.category_name }} questions</a>
                 </div>
             </div>
         </div>

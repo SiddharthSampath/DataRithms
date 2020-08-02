@@ -1,7 +1,47 @@
 {% extends "base.html" %} 
 
 {% block links %}
+<script>
+window.onload = function(){
+    let token = localStorage.getItem('token');
+    let parent = document.querySelector(".col-3");
+    let edits = document.querySelectorAll('.edit-btn');
+    let deletes = document.querySelectorAll('.delete-btn');
+    console.log(edits);
+    if(token != null){
+        let parsed = jwt_decode(token);
+        let add_question_perm = parsed["permissions"].includes('post:question');
 
+        if(add_question_perm == false){
+            document.getElementById("newQuestion").style.display = "none";
+        }
+        
+        let edit_question_perm = parsed["permissions"].includes('patch:question');
+        let delete_question_perm = parsed["permissions"].includes('delete:question');
+        if(edit_question_perm == false){
+            for(let i = 0; i <  edits.length; i++){
+                edits[i].style.display = "none";
+            }
+        }
+        if(delete_question_perm == false){
+            for(let i = 0; i <  deletes.length; i++){
+                deletes[i].style.display = "none";
+            }
+        }
+
+    }
+    else{
+        document.getElementById("newQuestion").style.display = "none";
+        for(let i = 0; i <  edits.length; i++){
+            edits[i].style.display = "none";
+        }
+        for(let i = 0; i <  deletes.length; i++){
+            deletes[i].style.display = "none";
+        }
+    }
+
+}
+</script>
 {% endblock %} 
 
 {% block title %} DataRithms Question List {% endblock %}
@@ -75,8 +115,8 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button id="edit" class="btn btn-primary">Edit</button>
-                        <button id="delete" class="btn btn-danger">Delete</button> 
+                        <button id="edit" class="edit-btn btn btn-primary">Edit</button>
+                        <button id="delete" class="delete-btn btn btn-danger">Delete</button> 
                     </div>
                 </div>
             </li>

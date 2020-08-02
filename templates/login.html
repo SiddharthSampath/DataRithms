@@ -1,0 +1,45 @@
+{% extends "base.html" %} 
+
+{% block title %}DataRithms{% endblock %} 
+
+{% block links %}
+<script src="/static/js/jwt-decode.min.js"></script>
+<script>
+    window.onload = function(){
+        const type = window.location.hash.substr(1);
+       
+        const tokenlist = type.split('=');
+        
+        let token = tokenlist[1].split('&');
+        const actualtokenn = token[0];
+        localStorage.setItem('token', actualtokenn)
+        token = localStorage.getItem('token')
+        console.log("Token = " + token);
+        const parsed = jwt_decode(token);
+        console.log("Parsed = " + parsed);
+        console.log(parsed["permissions"]);
+        let h1 = document.getElementById('welcome');
+        if(parsed["permissions"].length > 2)
+        {
+            h1.innerHTML = "Welcome Admin!";
+        }
+        else if(parsed["permissions"].length == 1){
+            h1.innerHTML = "Welcome Editor!";
+        }
+        else{
+            h1.innerHTML = "Hey, sorry, you are not allowed to here!";
+        }
+        //console.log(type);
+        let newtoken = localStorage.getItem('token');
+        console.log("LOookkkkkkk Hereeeeee" + newtoken);
+        }
+      
+    
+
+</script>
+{% endblock %}
+
+{% block content %}
+<h1 id="welcome"></h1>
+
+{% endblock %}

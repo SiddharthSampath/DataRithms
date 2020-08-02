@@ -32,14 +32,14 @@ def create_app(test_config=None):
 
   @app.route('/login')
   def login():
-    return render_template('index.html')
+    return render_template('login.html')
 
   @app.route('/categories/')
   def categories():
     categories = Category.query.all()
-    print(categories) 
+    print("Hey there") 
     return render_template('categories.html', category_data=categories)
-
+ 
   @app.route('/categories/<int:category_id>/questions/')
   def category_questions(category_id):
     current_category = Category.query.get(category_id)

@@ -4,6 +4,53 @@
 
 {% block links %}
 <link rel="stylesheet" href="/static/css/index.css"> 
+<script src="/static/js/index.js" type="text/javascript"></script>
+<script>
+    window.onload = function(){
+  console.log("AAAAA")
+  const login = document.getElementById('login');
+  let link = 'https://';
+  const domain = 'datarithms.us.auth0.com';
+  const audience = 'datarithms';
+  const response = 'token'
+  const client_id = 'Y5vM0Nuvm7HJ7U2QRMw5kOtYgyj2jF8L'
+  const redirect_uri = 'http://127.0.0.1:5000/login'
+  link += domain + '/authorize?';
+  link += 'audience=' + audience + '&';
+  link += 'response_type=' + response + '&';
+  link += 'client_id=' + client_id + '&';
+  link += 'redirect_uri=' + redirect_uri;
+  login.href = link;
+  
+  }
+  function sendrequest(){
+        console.log("Heelooo from sendrquest function in index.html");
+        let token = localStorage.getItem('token');
+        if(token == null){
+            token = "NoAuth";
+        }
+        console.log(document.getElementById("catbutton"));
+        console.log(token);
+        document.getElementById("catbutton").addEventListener('click', function(){
+            console.log("Inside click function");
+            fetch('/categories/',{
+                    method : 'GET',
+                    headers:{
+                        'Authorization' : "Bearer " + token
+                    }
+                        
+                }).then(function(response){
+                    window.location.href='/categories/'
+    
+                    
+                }).catch(function(){
+                    console.log();
+
+                })
+        })
+    }
+    
+</script>
 {% endblock %} 
 
 {% block content %}
@@ -14,9 +61,13 @@
         <hr class="my-4">
         <p>Explore a collection of a variety of questions, to help you gain the confidence you need to ace any coding interview</p>
         <p class="lead">
-            <a class="btn btn-primary btn-lg" href={{ url_for( 'categories') }} role="button">Go to Questions</a>
+            <!-- href={{ url_for( 'categories') }}  -->
+            <a id="catbutton" class="btn btn-primary btn-lg" onclick="sendrequest()" role="button">Go to Questions</a>
         </p>
     </div>
 </div>
 
 {% endblock %}
+<script>
+    
+</script>
