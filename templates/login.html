@@ -32,8 +32,17 @@
         //console.log(type);
         let newtoken = localStorage.getItem('token');
         console.log("LOookkkkkkk Hereeeeee" + newtoken);
-        }
-      
+        fetch('/setheader/',{
+                    method : 'GET',
+                    headers:{
+                        'Authorization' : "Bearer " + newtoken
+                    } 
+                }
+        ).then(function(response){
+            console.log(response);
+        })
+    }
+        
     
 
 </script>
@@ -41,5 +50,6 @@
 
 {% block content %}
 <h1 id="welcome"></h1>
+<h2>{{header}}</h2>
 
 {% endblock %}

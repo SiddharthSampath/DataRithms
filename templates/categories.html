@@ -2,7 +2,7 @@
 
 {% block links %}
 <link rel="stylesheet" href="/static/css/categories.css"> 
-<script src="/static/js/jwt-decode.min.js"></script>
+
 <script>
     window.onload = function(){
         let token = localStorage.getItem('token');
@@ -18,39 +18,39 @@
             document.getElementById("newCategory").style.display = "none";
         }
     }
-    function sendrequestforquestion(){
-        console.log("Heelooo from sendrquest function in categories.html");
-        let token = localStorage.getItem('token');
-        if(token == null){
-            token = "NoAuth";
-        }
-        console.log(document.getElementById("categorieslist"));
-        console.log(token);
-        document.getElementById("categorieslist").addEventListener('click', function(e){
-            console.log(e.id);
-            if(e.target.classList.contains('categ-class')){
-                console.log('in here');
-                console.log(e.target);
-                console.log("Inside click function");
-                fetch('/categories/'+e.target.id+'/questions',{
-                    method : 'GET',
-                    headers:{
-                        'Authorization' : "Bearer " + token
-                    }
+    // function sendrequestforquestion(){
+    //     console.log("Heelooo from sendrquest function in categories.html");
+    //     let token = localStorage.getItem('token');
+    //     if(token == null){
+    //         token = "NoAuth";
+    //     }
+    //     console.log(document.getElementById("categorieslist"));
+    //     console.log(token);
+    //     document.getElementById("categorieslist").addEventListener('click', function(e){
+    //         console.log(e.id);
+    //         if(e.target.classList.contains('categ-class')){
+    //             console.log('in here');
+    //             console.log(e.target);
+    //             console.log("Inside click function");
+    //             fetch('/categories/'+e.target.id+'/questions',{
+    //                 method : 'GET',
+    //                 headers:{
+    //                     'Authorization' : "Bearer " + token
+    //                 }  
                         
-                }).then(function(response){
-                     window.location.href='/categories/'+e.target.id+'/questions'
+    //             }).then(function(response){
+    //                  window.location.href='/categories/'+e.target.id+'/questions'
     
                     
-                }).catch(function(){
-                    console.log();
+    //             }).catch(function(){
+    //                 console.log();
 
-                })
+    //             })
 
-            }
+    //         }
             
-        })
-    }
+    //     })
+    // }
 </script>
 {% endblock %} 
 
@@ -69,8 +69,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ category.category_name }}</h5>
                     <p class="card-text">{{ category.category_description }}</p>
-                    <!-- href={{ url_for('category_questions', category_id=category.id) }}  -->
-                    <a id="{{category.id}}" onclick="sendrequestforquestion()" href="#" class="categ-class btn btn-primary">Go to {{ category.category_name }} questions</a>
+                    <!--  onclick="sendrequestforquestion()" -->
+                    <a id="{{category.id}}"  href={{ url_for('category_questions', category_id=category.id) }} class="categ-class btn btn-primary">Go to {{ category.category_name }} questions</a>
                 </div>
             </div>
         </div>

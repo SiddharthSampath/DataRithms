@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, abort, jsonify, render_template, flash, redirect, url_for
+from flask import Flask, request, abort, jsonify, render_template, flash, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -7,6 +7,7 @@ from models import setupdb, Category, Problem, rollback
 from forms import QuestionForm, CategoryForm
 from flask_wtf.csrf import CSRFProtect
 from config import SECRET_KEY
+from auth.auth import AuthError, requires_auth
 import os
 csrf = CSRFProtect() 
 
@@ -30,16 +31,26 @@ def create_app(test_config=None):
   def index():
     return render_template('index.html')
 
-  @app.route('/login')
-  def login():
+  @app.route('/setheader/')
+  def setHeader():
+    header = request.headers.get('Authorization')
+    if header is not None:
+      session['token'] = header
+    print(f"Session Token : {session['token']}")
+    return jsonify({"Success" : True, "header" : header})
+  @app.route('/login/')
+  def login(): 
+    
     return render_template('login.html')
 
   @app.route('/categories/')
   def categories():
+    
+    print(f"Headers = {request.headers.get('Authorization')}")  
     categories = Category.query.all()
     print("Hey there") 
     return render_template('categories.html', category_data=categories)
- 
+   
   @app.route('/categories/<int:category_id>/questions/')
   def category_questions(category_id):
     current_category = Category.query.get(category_id)
@@ -57,7 +68,8 @@ def create_app(test_config=None):
     return render_template('create_question.html', form=form, category_id=category_id, category_name=category_name)
 
   @app.route('/categories/<int:category_id>/addquestion/', methods=['POST'])
-  def insert_question(category_id):
+  @requires_auth('post:question')
+  def insert_question(payload, category_id):
     try:
       question_title = request.form['question_title']
       question = request.form['question']
@@ -81,7 +93,8 @@ def create_app(test_config=None):
     return render_template('create_category.html', form=form)
   
   @app.route('/categories/addcategory/', methods=['POST'])
-  def insert_category():
+  @requires_auth('post:category') 
+  def insert_category(payload):
     try:
       category_name = request.form['category_name']
       category_description = request.form['category_description']
