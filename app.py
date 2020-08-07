@@ -160,6 +160,49 @@ def create_app(test_config=None):
     flash("Category added successfully")
     return redirect(url_for('create_category'))
 
+  
+  @app.errorhandler(404)
+  def notFound(error):
+      return jsonify({
+          "success": False,
+          "error": 404,
+          "message": "Resource Not Found"
+      }), 404
+
+
+  @app.errorhandler(400)
+  def badRequest(error):
+      return jsonify({
+          "success": False,
+          "error": 400,
+          "message": "Bad Request"
+      }), 400
+
+
+  @app.errorhandler(401)
+  def unauthorized(error):
+      return jsonify({
+          "success": False,
+          "error": 401,
+          "message": "Unauthorized"
+      }), 401
+
+
+  @app.errorhandler(403)
+  def forbidden(error):
+      return jsonify({
+          "success": False,
+          "error": 403,
+          "message": "Permission to perform action not present"
+      }), 403
+  
+  @app.errorhandler(500)
+  def servererror(error):
+      return jsonify({
+          "success": False,
+          "error": 500,
+          "message": "Server Error"
+      }), 403
  
   return app
 
