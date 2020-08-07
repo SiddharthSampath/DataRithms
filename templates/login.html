@@ -21,17 +21,15 @@
         let h1 = document.getElementById('welcome');
         if(parsed["permissions"].length > 2)
         {
-            h1.innerHTML = "Welcome Admin!";
+            h1.innerHTML = "Welcome back, Admin!";
         }
         else if(parsed["permissions"].length == 1){
-            h1.innerHTML = "Welcome Editor!";
+            h1.innerHTML = "Welcome back, Editor!";
         }
         else{
             h1.innerHTML = "Hey, sorry, you are not allowed to here!";
         }
-        //console.log(type);
         let newtoken = localStorage.getItem('token');
-        console.log("LOookkkkkkk Hereeeeee" + newtoken);
         fetch('/setheader/',{
                     method : 'GET',
                     headers:{
@@ -49,6 +47,14 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+    <div class="jumbotron mt-5 text-center">
+        <h1 id="welcome" class="display-3"></h1>
+        <p id="goto" class="lead text-center">
+            <a href={{ url_for( 'categories') }} id="catbutton" class="btn btn-primary btn-lg" role="button">Go to Categories</a>
+        </p>
+    </div>
+</div>
 <h1 id="welcome"></h1>
 <h2>{{header}}</h2>
 

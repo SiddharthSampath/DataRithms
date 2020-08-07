@@ -16,34 +16,4 @@ function loadURL(){
         login.href = link;
     
     }
-  //   function sendrequest(){
-  //         console.log("Heelooo from sendrquest function in index.html");
-  //         let token = localStorage.getItem('token');
-  //         if(token == null){
-  //             token = "NoAuth";
-  //         }
-  //         console.log(document.getElementById("catbutton"));
-  //         console.log(token);
-  //         document.getElementById("goto").addEventListener('click', function(e){
-  //             if(e.target.id === "catbutton"){
-  //             console.log("Inside click function");
-  //                 fetch('/categories/',{
-  //                         method : 'GET',
-  //                         headers:{
-  //                             'Authorization' : "Bearer " + token
-  //                         }
-                              
-  //                     }).then(function(response){
-  //                         window.location.href='/categories/'
-          
-                          
-  //                     }).catch(function(){
-  //                         console.log();
-  
-  //                     })
-  //                 }
-  //             })
-          
-  //     }
-      
   
