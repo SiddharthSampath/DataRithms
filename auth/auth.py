@@ -33,6 +33,12 @@ class AuthError(Exception):
 
 
 def get_token_auth_header():
+    if 'token' not in session:
+        raise AuthError({
+            'code': 'invalid token',
+            'description': 'Bearer token is required'
+        }, 401)
+        
     auth_header = session['token']
     if not auth_header: 
         raise AuthError({

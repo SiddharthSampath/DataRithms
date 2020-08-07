@@ -1,0 +1,33 @@
+{% extends "base.html" %} 
+
+{% block title %}DataRithms{% endblock %} 
+
+{% block links %}
+<link rel="stylesheet" href="/static/css/createquestion.css">
+{% endblock %}
+
+{% block content %}
+<h1 class="text-center">  </h1>
+<div class="container">
+    <!-- Default form contact -->
+<form id="edit-form" method='POST' class="text-center mt-5 border border-light p-5">
+
+    <p class="h4 mb-4">Edit question</p>
+    {{ form.csrf_token }} 
+    <!-- Question Title -->
+    {{ form.question_title(class_='form-control mb-4', placeholder = 'Question title', autofocus = true) }}
+
+    <!-- Question -->
+    {{ form.question(class_='form-control mb-4', placeholder = 'Question', autofocus = true) }}
+
+    <!-- Answer -->
+    {{ form.answer(class_='form-control mb-4', placeholder = 'Answer', autofocus = true) }}
+    
+    
+    <button class="btn btn-info btn-block" type="submit">Add</button>
+
+</form>
+<!-- Default form contact -->
+</div>
+
+{% endblock %}

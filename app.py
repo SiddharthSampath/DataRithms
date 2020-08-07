@@ -38,10 +38,19 @@ def create_app(test_config=None):
       session['token'] = header
     print(f"Session Token : {session['token']}")
     return jsonify({"Success" : True, "header" : header})
+  
   @app.route('/login/')
   def login(): 
     
     return render_template('login.html')
+
+  @app.route('/logout/')
+  def logout(): 
+    if 'token' in session:
+      session.pop('token')
+    flash("You have successfully logged out!")
+    return redirect(url_for('index'))
+    
 
   @app.route('/categories/')
   def categories():
@@ -87,6 +96,51 @@ def create_app(test_config=None):
     flash("Question successfully added")
     return redirect(url_for('create_question', category_id=category_id))
 
+  @app.route('/questions/<int:question_id>/edit')
+  def edit_question_display(question_id):
+    print("Reached edit")
+    question = Problem.query.get(question_id) 
+    form = QuestionForm(obj=question)
+    return render_template('edit_question.html', form=form)
+
+  @app.route('/questions/<int:question_id>/edit', methods=['PATCH', 'POST'])
+  @requires_auth('patch:question')
+  def edit_question(payload,question_id): 
+    try:
+      question_title = request.form['question_title']
+      question = request.form['question']
+      answer = request.form['answer']
+      problem = Problem.query.get(question_id)
+      problem.question_title = question_title
+      problem.question = question
+      problem.answer = answer
+      problem.insert()
+      category_id = problem.cat_id
+    except:
+      rollback()
+      flash("Error occured during edit")
+      abort(400)
+    
+    flash("Question successfully edited")
+    return redirect(url_for('category_questions', category_id=category_id))
+
+  @app.route('/questions/<int:question_id>/delete', methods=['DELETE','GET'])
+  @requires_auth('delete:question')
+  def delete_question(payload, question_id):
+    try:
+      question = Problem.query.get(question_id)
+      category_id = question.cat_id
+      question.delete()
+      
+    except:
+      rollback()
+      flash("Question could not be deleted")
+      abort(400)
+    
+    flash("Question successfully deleted!")
+    return redirect(url_for('category_questions', category_id=category_id))
+
+
   @app.route('/categories/addcategory/')
   def create_category():
     form = CategoryForm()
@@ -95,19 +149,18 @@ def create_app(test_config=None):
   @app.route('/categories/addcategory/', methods=['POST'])
   @requires_auth('post:category') 
   def insert_category(payload):
-    try:
+    try: 
       category_name = request.form['category_name']
       category_description = request.form['category_description']
       category = Category(category_name=category_name, category_description=category_description)
-      category.insert()
+      category.insert() 
     except:
       flash("Error occurred during insert")
       rollback()
     flash("Category added successfully")
     return redirect(url_for('create_category'))
 
-
-
+ 
   return app
 
 APP = create_app()
