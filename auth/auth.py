@@ -33,13 +33,16 @@ class AuthError(Exception):
 
 
 def get_token_auth_header():
+    
+    auth_header = request.headers.get('Authorization', None)
     if 'token' not in session:
-        raise AuthError({
-            'code': 'invalid token',
-            'description': 'Bearer token is required'
-        }, 401)
-        
-    auth_header = session['token']
+        if auth_header is None:
+            raise AuthError({
+                'code': 'invalid tokennnnnnnn',
+                'description': 'Bearer token is required'
+            }, 401)
+    if auth_header is None:
+        auth_header = session['token']
     if not auth_header: 
         raise AuthError({
             'code': 'authorization header missing',
@@ -186,7 +189,6 @@ def requires_auth(permission=''):
                 payload = verify_decode_jwt(token)
                 check_permissions(permission, payload)
             except AuthError as err:
-                print(err.error)
                 abort(err.status_code)
             return f(payload, *args, **kwargs)
 

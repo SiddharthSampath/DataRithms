@@ -70,7 +70,7 @@ def create_app(test_config=None):
 # Route to return form to be displayed
   @app.route('/categories/<int:category_id>/addquestion/')
   @requires_auth('post:question')
-  def create_question(category_id):
+  def create_question(payload,category_id):
     form = QuestionForm()
     category = Category.query.get(category_id)
     category_name = category.category_name
@@ -86,18 +86,18 @@ def create_app(test_config=None):
       answer = request.form['answer']
       problem = Problem(question_title=question_title, question=question, answer=answer, cat_id=category_id)
       problem.insert()
+      flash("Question successfully added")
     except:
       rollback()
       flash("Error occured during insert")
       abort(400)
     
-    flash("Question successfully added")
+    
     return redirect(url_for('create_question', category_id=category_id))
 
 # Route to return edit form
   @app.route('/questions/<int:question_id>/edit')
   def edit_question_display(question_id):
-    print("Reached edit")
     question = Problem.query.get(question_id) 
     form = QuestionForm(obj=question)
     return render_template('edit_question.html', form=form)
@@ -116,29 +116,31 @@ def create_app(test_config=None):
       problem.answer = answer
       problem.insert()
       category_id = problem.cat_id
+      flash("Question successfully edited")
     except:
       rollback()
       flash("Error occured during edit")
       abort(400)
     
-    flash("Question successfully edited")
+    
     return redirect(url_for('category_questions', category_id=category_id))
 
 # Route to handle delete requests sent
   @app.route('/questions/<int:question_id>/delete', methods=['DELETE','GET'])
   @requires_auth('delete:question')
-  def delete_question(payload, question_id):
+  def delete_question(payload,question_id):
     try:
       question = Problem.query.get(question_id)
       category_id = question.cat_id
+      question_id = question.id
       question.delete()
-      
+      flash("Question successfully deleted!") 
     except:
       rollback()
       flash("Question could not be deleted")
       abort(400)
     
-    flash("Question successfully deleted!")
+    
     return redirect(url_for('category_questions', category_id=category_id))
 
 # Route to render form for add category
@@ -149,18 +151,19 @@ def create_app(test_config=None):
   
 # Route to handle add category data
   @app.route('/categories/addcategory/', methods=['POST'])
-  @requires_auth('post:category') 
+  @requires_auth('post:category')
   def insert_category(payload):
     try: 
-      category_name = request.form['category_name']
+      category_name = request.form['category_name'] 
       category_description = request.form['category_description']
       category = Category(category_name=category_name, category_description=category_description)
       category.insert() 
+      flash("Category added successfully")
     except:
       flash("Error occurred during insert")
       rollback()
       abort(422)
-    flash("Category added successfully")
+    
     return redirect(url_for('create_category'))
 
 # Error handlers

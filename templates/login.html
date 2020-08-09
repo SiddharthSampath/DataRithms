@@ -30,7 +30,7 @@
             h1.innerHTML = "Hey, sorry, you are not allowed to here!";
         }
         let newtoken = localStorage.getItem('token');
-        console.log("Token" +newtoken);
+        console.log("Token = " +newtoken);
         fetch('/setheader/',{
                     method : 'GET',
                     headers:{
