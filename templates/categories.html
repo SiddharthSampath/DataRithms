@@ -2,12 +2,9 @@
 
 {% block links %}
 <link rel="stylesheet" href="/static/css/categories.css"> 
-<!-- <script src="/static/js/index.js"></script> -->
+
 <script>
-    // import { loadURL } from '/static/js/index.js';
     window.onload = function(){
-        //loadURL();
-        console.log("AAAAA")
         const login = document.getElementById('login');
         let link = 'https://';
         const domain = 'datarithms.us.auth0.com';
@@ -41,39 +38,7 @@
         // window.location.href = '/'
         return true;
     }
-    // function sendrequestforquestion(){
-    //     console.log("Heelooo from sendrquest function in categories.html");
-    //     let token = localStorage.getItem('token');
-    //     if(token == null){
-    //         token = "NoAuth";
-    //     }
-    //     console.log(document.getElementById("categorieslist"));
-    //     console.log(token);
-    //     document.getElementById("categorieslist").addEventListener('click', function(e){
-    //         console.log(e.id);
-    //         if(e.target.classList.contains('categ-class')){
-    //             console.log('in here');
-    //             console.log(e.target);
-    //             console.log("Inside click function");
-    //             fetch('/categories/'+e.target.id+'/questions',{
-    //                 method : 'GET',
-    //                 headers:{
-    //                     'Authorization' : "Bearer " + token
-    //                 }  
-                        
-    //             }).then(function(response){
-    //                  window.location.href='/categories/'+e.target.id+'/questions'
     
-                    
-    //             }).catch(function(){
-    //                 console.log();
-
-    //             })
-
-    //         }
-            
-    //     })
-    // }
 </script>
 {% endblock %} 
 

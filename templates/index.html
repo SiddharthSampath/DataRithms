@@ -4,7 +4,6 @@
 
 {% block links %}
 <link rel="stylesheet" href="/static/css/index.css"> 
-<!-- <script src="/static/js/index.js" type="text/javascript"></script> -->
 <script>
     window.onload = function(){
   console.log("AAAAA")
@@ -23,36 +22,7 @@
   login.href = link;
   
   }
-//   function sendrequest(){
-//         console.log("Heelooo from sendrquest function in index.html");
-//         let token = localStorage.getItem('token');
-//         if(token == null){
-//             token = "NoAuth";
-//         }
-//         console.log(document.getElementById("catbutton"));
-//         console.log(token);
-//         document.getElementById("goto").addEventListener('click', function(e){
-//             if(e.target.id === "catbutton"){
-//             console.log("Inside click function");
-//                 fetch('/categories/',{
-//                         method : 'GET',
-//                         headers:{
-//                             'Authorization' : "Bearer " + token
-//                         }
-                            
-//                     }).then(function(response){
-//                         window.location.href='/categories/'
-        
-                        
-//                     }).catch(function(){
-//                         console.log();
 
-//                     })
-//                 }
-//             })
-        
-//     }
-    
 </script>
 {% endblock %} 
 
@@ -64,7 +34,6 @@
         <hr class="my-4">
         <p>Explore a collection of a variety of questions, to help you gain the confidence you need to ace any coding interview</p>
         <p id="goto" class="lead">
-            <!--   onclick="sendrequest()"-->
             <a href={{ url_for( 'categories') }} id="catbutton" class="btn btn-primary btn-lg" role="button">Go to Questions</a>
         </p>
     </div>

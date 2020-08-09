@@ -31,51 +31,52 @@ def create_app(test_config=None):
   def index():
     return render_template('index.html')
 
+# route to set the header with the bearer token once a user logs in
   @app.route('/setheader/')
   def setHeader():
     header = request.headers.get('Authorization')
     if header is not None:
       session['token'] = header
-    print(f"Session Token : {session['token']}")
     return jsonify({"Success" : True, "header" : header})
   
+# redirecting on successful login
   @app.route('/login/')
   def login(): 
-    
     return render_template('login.html')
 
+# Removing token from session once user logs out
   @app.route('/logout/')
   def logout(): 
     if 'token' in session:
       session.pop('token')
     flash("You have successfully logged out!")
     return redirect(url_for('index'))
-    
 
+# Returning list of categories
   @app.route('/categories/')
   def categories():
-    
-    print(f"Headers = {request.headers.get('Authorization')}")  
     categories = Category.query.all()
-    print("Hey there") 
     return render_template('categories.html', category_data=categories)
-   
+
+# Returning questions per category
   @app.route('/categories/<int:category_id>/questions/')
   def category_questions(category_id):
     current_category = Category.query.get(category_id)
     questions = current_category.problems
     category_name = current_category.category_name
     category_name = category_name.upper()
-    print(questions)
     return render_template("questions.html", questions=questions, category=category_name, category_id=category_id)
     
+# Route to return form to be displayed
   @app.route('/categories/<int:category_id>/addquestion/')
+  @requires_auth('post:question')
   def create_question(category_id):
     form = QuestionForm()
     category = Category.query.get(category_id)
     category_name = category.category_name
     return render_template('create_question.html', form=form, category_id=category_id, category_name=category_name)
 
+# Route to handle the form data sent to the backend
   @app.route('/categories/<int:category_id>/addquestion/', methods=['POST'])
   @requires_auth('post:question')
   def insert_question(payload, category_id):
@@ -83,19 +84,17 @@ def create_app(test_config=None):
       question_title = request.form['question_title']
       question = request.form['question']
       answer = request.form['answer']
-      print(question[0:10])
-      print(answer[0:10])
       problem = Problem(question_title=question_title, question=question, answer=answer, cat_id=category_id)
       problem.insert()
     except:
       rollback()
       flash("Error occured during insert")
-      print("Error occured")
       abort(400)
     
     flash("Question successfully added")
     return redirect(url_for('create_question', category_id=category_id))
 
+# Route to return edit form
   @app.route('/questions/<int:question_id>/edit')
   def edit_question_display(question_id):
     print("Reached edit")
@@ -103,6 +102,7 @@ def create_app(test_config=None):
     form = QuestionForm(obj=question)
     return render_template('edit_question.html', form=form)
 
+# Route to handle to edited information
   @app.route('/questions/<int:question_id>/edit', methods=['PATCH', 'POST'])
   @requires_auth('patch:question')
   def edit_question(payload,question_id): 
@@ -124,6 +124,7 @@ def create_app(test_config=None):
     flash("Question successfully edited")
     return redirect(url_for('category_questions', category_id=category_id))
 
+# Route to handle delete requests sent
   @app.route('/questions/<int:question_id>/delete', methods=['DELETE','GET'])
   @requires_auth('delete:question')
   def delete_question(payload, question_id):
@@ -140,12 +141,13 @@ def create_app(test_config=None):
     flash("Question successfully deleted!")
     return redirect(url_for('category_questions', category_id=category_id))
 
-
+# Route to render form for add category
   @app.route('/categories/addcategory/')
   def create_category():
     form = CategoryForm()
     return render_template('create_category.html', form=form)
   
+# Route to handle add category data
   @app.route('/categories/addcategory/', methods=['POST'])
   @requires_auth('post:category') 
   def insert_category(payload):
@@ -157,10 +159,12 @@ def create_app(test_config=None):
     except:
       flash("Error occurred during insert")
       rollback()
+      abort(422)
     flash("Category added successfully")
     return redirect(url_for('create_category'))
 
-  
+# Error handlers
+
   @app.errorhandler(404)
   def notFound(error):
       return jsonify({

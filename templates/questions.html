@@ -4,7 +4,6 @@
 <script src="/static/js/index.js"></script>
 <script>
 window.onload = function(){
-    console.log("AAAAA")
     const login = document.getElementById('login');
     let link = 'https://';
     const domain = 'datarithms.us.auth0.com';
@@ -22,7 +21,6 @@ window.onload = function(){
     let parent = document.querySelector(".col-3");
     let edits = document.querySelectorAll('.edit-btn');
     let deletes = document.querySelectorAll('.delete-btn');
-    console.log(edits);
     if(token != null){
         let parsed = jwt_decode(token);
         let add_question_perm = parsed["permissions"].includes('post:question');
