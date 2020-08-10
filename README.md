@@ -1,4 +1,4 @@
-# DataRithms
+# DataRithms - https://data-rithms.herokuapp.com/
 A web based application, which contains the most popular coding problems, often asked in coding interviews and online coding rounds. The main motivation for this, was to create a platform which would help to just go through all important on a single platform problems and solutions just before an interview. The application is created entirely in Flask, and unittest is used for Unit testing. It uses Auth0 for Role Based Authentication
 
 - Has 3 different roles
@@ -56,7 +56,7 @@ To run the tests
 
 ### Getting Started
 
-- Base URL : This project is currently not hosted on a public domain, and can only be run locally. The default port used by the API is 5000, and the base URL is > http://localhost:5000/
+- Base URL : This project is currently hosted on a public domain on heroku. The url is https://data-rithms.herokuapp.com/
 
 - Authentication : Authentication is being done using Auth0.
 
