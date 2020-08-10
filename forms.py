@@ -18,7 +18,8 @@ class QuestionForm(Form):
         'answer',
         validators=[DataRequired()]
     )
-    
+
+
 class CategoryForm(Form):
     category_name = StringField(
         'category_name',
@@ -28,5 +29,3 @@ class CategoryForm(Form):
         'category_description',
         validators=[DataRequired()]
     )
-    
-    
