@@ -1,2 +1,2 @@
 import os 
-SECRET_KEY = os.urandom(32)
+SECRET_KEY = 'thisisasecretstring'
