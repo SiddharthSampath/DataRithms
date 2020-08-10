@@ -14,7 +14,7 @@ def setupdb(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    migrate = Migrate(app, db)
+    #migrate = Migrate(app, db)
     #db.create_all()
 
 def rollback():

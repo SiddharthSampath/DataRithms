@@ -97,7 +97,7 @@ class DataRithmsTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 401)   
     
     def test_12_delete_question(self):
-        question_id = 9
+        question_id = 12
         res = self.client().delete(f'/questions/{question_id}/delete',headers={"Authorization" : self.adminheader})
         # Checking for a 302, as after the post request, we are redirecting to the categories page on the frontend
         # The redirect function gives a response of 302
@@ -109,7 +109,7 @@ class DataRithmsTestCase(unittest.TestCase):
         self.assertEqual(res.status_code,400)
     
     def test_14_delete_question_auth_error(self):
-        question_id = 11
+        question_id = 14
         res = self.client().delete(f'/questions/{question_id}/delete')
         self.assertEqual(res.status_code,401)
 
