@@ -3,18 +3,24 @@ A web based application, which contains the most popular coding problems, often 
 
 - Has 3 different roles
 -- Admin - The admin creates categories and questions through the frontend. The admin is also allowed to edit and delete questions.
+
 -- Editor - The editor has permissions to edit questions
+
 -- Normal user - The generic user is allowed to view all the categories and questions and their solutions.
 
 ## Getting Started
 ### Tech Stack
 > Frontend - mdbootstrap, WTForms, JavaScript
+
 > Backend - Python 3, Flask, SQLAlchemy, PostgreSQL
+
 > Hosting service - Heroku
 
 ### Prerequisites
 > Python3 and pip should be installed (https://www.python.org/downloads/)
+
 > PostgreSQL should be installed (https://www.postgresql.org/download/)
+
 ### Setting up the project to run locally
 
 Create a virtual environment by using the command
