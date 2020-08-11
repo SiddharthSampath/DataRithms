@@ -104,7 +104,7 @@ def create_app(test_config=None):
             flash("Question successfully added")
         except BaseException:
             rollback()
-            flash("Error occured during insert")
+            flash("Error occurred during insert")
             abort(400)
 
         return redirect(url_for('create_question', category_id=category_id))
@@ -133,7 +133,7 @@ def create_app(test_config=None):
             flash("Question successfully edited")
         except BaseException:
             rollback()
-            flash("Error occured during edit")
+            flash("Error occurred during edit")
             abort(400)
 
         return redirect(url_for('category_questions', category_id=category_id))
